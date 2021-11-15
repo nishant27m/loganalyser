@@ -1,0 +1,42 @@
+plugins {
+    id "java"
+    id "idea"
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "org.springframework.boot" version "2.5.6"
+}
+
+group = 'au.com.nvc.loganalyser'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+sourceSets.main.java.srcDirs "src/generated-sources/java"
+
+bootRun {
+    systemProperties += System.properties
+    jvmArgs(["--add-opens", "java.base/java.util=ALL-UNNAMED"])
+    jvmArgs(["--add-opens", "java.base/java.time=ALL-UNNAMED"])
+    jvmArgs(["--add-opens", "java.base/java.lang.invoke=ALL-UNNAMED"])
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+    reports.junitXml.enabled = true
+    reports.html.enabled = true
+}
+
