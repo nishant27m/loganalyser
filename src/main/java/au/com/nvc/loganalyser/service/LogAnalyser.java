@@ -1,5 +1,6 @@
 package au.com.nvc.loganalyser.service;
 
+import au.com.nvc.loganalyser.data.Result;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class LogAnalyser {
 
     private static final String LOG_FILE = "logs/programming-task-example-data.log";
 
-    public void process() throws IOException {
+    public Result process() throws IOException {
         final String regex = "^(\\S+) (\\S+) (\\S+) " +
                 "\\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(\\S+)" +
                 " (\\S+)\\s*(\\S+)?\\s*\" (\\d{3}) (\\S+)";
@@ -35,6 +36,9 @@ public class LogAnalyser {
                 }
             );
         }
+        Result result = new Result();
+        result.setUniqueIpAddress(ipAddresses.size());
         System.out.println("Active IP Addresses "+ipAddresses+" sites "+sites);
+        return result;
     }
 }
